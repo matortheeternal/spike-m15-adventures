@@ -69,8 +69,6 @@ body {
 
 .mana-cost img {
     height: 18px;
-    box-shadow: -0.03em 0.1em 0 black;
-    border-radius: 50%;
 }
 
 .card-art {
@@ -91,6 +89,7 @@ body {
     justify-content: space-between;
     padding: 4px 8px;
     font-size: 17px;
+    letter-spacing: 0.1px;
     height: 28px;
     align-items: center;
     margin-top: 3px;
@@ -178,6 +177,16 @@ body {
     overflow: hidden;
     height: 160px;
     font-family: "mtg-text", sans-serif;
+}
+
+.adventure-right img {
+    width: 14px;
+    vertical-align: baseline;
+    margin: 0 1px;
+}
+
+.adventure-right img.other {
+    margin-bottom: -1px;
 }
 
 .flavor-text {

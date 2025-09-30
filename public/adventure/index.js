@@ -65,8 +65,8 @@ const initialCardData = {
 window.initCardData = function() {
     return {
         ...initialCardData,
-        generateSymbols(str) {
-            return window.generateSymbols(str);
+        generateSymbols(str, useTall = false) {
+            return window.generateSymbols(str, useTall);
         },
         async updateBackgrounds() {
             const { color, c } = getColorIdentity(this.manaCost, this.superType);

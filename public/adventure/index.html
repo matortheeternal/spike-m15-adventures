@@ -29,7 +29,7 @@
                 <!-- Card Header -->
                 <div class="card-header">
                     <div class="card-name" x-text="cardName" x-fit-text="cardName"></div>
-                    <div class="mana-cost" x-html="generateSymbols(manaCost)"></div>
+                    <div class="mana-cost" x-html="generateSymbols(manaCost, true)"></div>
                 </div>
 
                 <!-- Card Art -->
@@ -59,7 +59,8 @@
                     <div class="adventure-left">
                         <div class="adventure-header">
                             <span class="adventure-name" x-text="adventureName"></span>
-                            <span class="adventure-cost mana-cost" x-html="generateSymbols(adventureCost)"></span>
+                            <span class="adventure-cost mana-cost"
+                                  x-html="generateSymbols(adventureCost, true)"></span>
                         </div>
                         <div class="adventure-type">
                             <span x-text="adventureSuperType"></span>

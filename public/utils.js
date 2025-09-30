@@ -36,14 +36,15 @@ function getLegendName(card) {
     return match ? match[1] || match[2] : card.cardName;
 }
 
-window.generateSymbols = function(str) {
+window.generateSymbols = function(str, useTall) {
+    const size = useTall ? 'tall' : 'flat';
     return str.toLowerCase().split('').map(sym => {
         if ('qtxyz'.includes(sym))
-            return `<img class="other" src="/assets/mana-fonts/small/other/mana_${sym}.png"/>`
+            return `<img class="other" src="/assets/mana-fonts/${size}/mana_${sym}.png"/>`
         if ('0123456789'.includes(sym))
-            return `<img src="/assets/mana-fonts/small/number/${sym}.png"/>`;
+            return `<img src="/assets/mana-fonts/${size}/${sym}.png"/>`;
         if ('wubrgc'.includes(sym))
-            return `<img src="/assets/mana-fonts/small/color/mana_${sym}.png"/>`;
+            return `<img src="/assets/mana-fonts/${size}/mana_${sym}.png"/>`;
         return sym;
     }).join('');
 }
@@ -68,12 +69,24 @@ function elementOverflows(el) {
 Alpine.directive('fit-text', (el, { expression }, { effect, evaluateLater }) => {
     const adjustFontSize = () => {
         el.style.fontSize = '';
-        let fontSize = parseFloat(getComputedStyle(el).fontSize) || 16;
+        const baseStyle = getComputedStyle(el);
+        const initialFontSize = parseFloat(baseStyle.fontSize) || 16;
+        const initialLineHeight = parseFloat(baseStyle.lineHeight) || 1.2;
         const minFontSize = 10;
-        const step = 0.5;
+        const minLineHeight = 1.02;
+        const fontSizeStep = 0.5;
+        const lineHeightStep = 0.1;
 
+        let fontSize = initialFontSize;
+        let lineHeight = initialLineHeight;
         while (elementOverflows(el) && fontSize > minFontSize) {
-            fontSize -= step;
+            if (lineHeight > minLineHeight) {
+                lineHeight -= lineHeightStep;
+            } else {
+                lineHeight = initialLineHeight;
+                fontSize -= fontSizeStep;
+            }
+            el.style.lineHeight = `${lineHeight}`;
             el.style.fontSize = `${fontSize}px`;
         }
     };
