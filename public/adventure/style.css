@@ -1,7 +1,4 @@
 @font-face {
-    font-family: "Beleren";
-    src: url("/assets/fonts/beleren.ttf");
-}@font-face {
     font-family: "Beleren Bold";
     src: url("/assets/fonts/beleren-bold_P1.01.ttf");
 }
@@ -12,6 +9,10 @@
 @font-face {
     font-family: "Relay Medium";
     src: url("/assets/fonts/relay-medium.ttf");
+}
+@font-face {
+    font-family: "MPlantin";
+    src: url("/assets/fonts/mplantin.ttf");
 }
 
 * {
@@ -140,7 +141,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: end;
-    font-family: Beleren, serif;
+    font-family: "Beleren Bold", serif;
     color: #fff;
     font-size: 15px;
     height: 21px;
@@ -152,7 +153,7 @@ body {
 }
 
 .adventure-type {
-    font-family: Beleren, serif;
+    font-family: "Beleren Bold", serif;
     color: #fff;
     font-size: 15px;
     height: 23px;
@@ -182,7 +183,7 @@ body {
     padding: 3px 7px;
     overflow: hidden;
     height: 160px;
-    font-family: "mtg-text", sans-serif;
+    font-family: "MPlantin", sans-serif;
 }
 
 .adventure-right img {
@@ -235,7 +236,7 @@ body {
 }
 
 .card-footer {
-    padding: 0 10px;
+    padding: 8px 10px 0;
     font-size: 10px;
     color: #fff;
     display: flex;
@@ -243,7 +244,6 @@ body {
     justify-content: space-between;
     align-items: end;
     font-family: "Relay Medium", sans-serif;
-    font-weight: bold;
 }
 
 .copyright {

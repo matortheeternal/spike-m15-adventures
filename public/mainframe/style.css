@@ -1,13 +1,14 @@
 @font-face {
-    font-family: "Beleren";
-    src: url("/assets/fonts/beleren.ttf");
-}@font-face {
     font-family: "Beleren Bold";
     src: url("/assets/fonts/beleren-bold_P1.01.ttf");
 }
 @font-face {
     font-family: "Beleren Small Caps Bold";
     src: url("/assets/fonts/belerensmallcaps-bold.ttf");
+}
+@font-face {
+    font-family: "Relay Medium";
+    src: url("/assets/fonts/relay-medium.ttf");
 }
 @font-face {
     font-family: "MPlantin";
@@ -186,7 +187,6 @@
     justify-content: space-between;
     align-items: end;
     font-family: "Relay Medium", sans-serif;
-    font-weight: bold;
 }
 
 .copyright {
