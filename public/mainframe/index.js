@@ -6,12 +6,15 @@ const colorNames = {
     u: 'blue'
 };
 
+const otherSymbols = ['q', 't', 'x', 'y', 'z'];
+const symbolExpr = /([1-9WUBRGwubrgTXYZ]+)(,)/g;
+
 function background(path, zIndex) {
-    return { backgroundImage: `url("assets/m15/${path}")`, zIndex };
+    return { backgroundImage: `url("/assets/m15/${path}")`, zIndex };
 }
 
 async function maskedBackground(path, maskPath, zIndex) {
-    const url = await maskImage(`assets/m15/${path}`, `assets/m15/${maskPath}`);
+    const url = await maskImage(`/assets/m15/${path}`, `/assets/m15/${maskPath}`);
     return { backgroundImage: `url("${url}")`, backgroundColor: 'black', zIndex };
 }
 
@@ -37,55 +40,58 @@ function isLegendary(superType) {
     return superType.toLowerCase().includes('legendary');
 }
 
+function getLegendName(card) {
+    if (!isLegendary(card.superType))
+        return card.cardName;
+    const match = card.cardName.match(/^(.+),|(.+) the/);
+    return match ? match[1] || match[2] : card.cardName;
+}
+
 const initialCardData = {
-    cardName: "Garenbrig Carver",
-    manaCost: "3G",
+    cardName: "Shigeki, Jukai Visionary",
+    manaCost: "1G",
     backgrounds: [],
-    artUrl: "assets/eld-156-garenbrig-carver.jpg",
-    superType: "Creature",
-    subType: "Human Warrior",
-    rarity: "Common",
-    adventureName: "Shield's Might",
-    adventureCost: "1G",
-    adventureSuperType: "Instant",
-    adventureSubType: "Adventure",
-    adventureText: "Target creature gets +2/+2 until end of turn. " +
-        "<i>(Then exile this card. You may cast " +
-        "the creature later from exile.)</i>",
-    flavorText: "Countless knights of Garenbrig owe their " +
-        "lives to his peerless craftsmanship.",
-    rulesText: "",
-    power: "3",
-    toughness: "2",
+    artUrl: "/assets/tdc-270-shigeki-jukai-visionary.jpg",
+    superType: "Legendary Enchantment Creature",
+    subType: "Snake Druid",
+    rarity: "Rare",
+    flavorText: "",
+    rulesText: "<p>1G, T, Return @ to its owner's hand: Reveal the top four cards of your " +
+        "library. You may put a land card from among them onto the battlefield tapped. " +
+        "Put the rest into your graveyard.</p>" +
+        "<p>Channel — XXGG, Discard this card: Return X target nonlegendary cards from " +
+        "your graveyard to your hand.</p>",
+    power: "1",
+    toughness: "3",
     showPT: true,
-    showStamp: false,
-    cardNumber: "156 / 269",
-    setCode: "ELD",
+    showStamp: true,
+    cardNumber: "0270",
+    setCode: "TDC",
     language: "EN",
-    artist: "Lucas Graciano",
-    copyright: "© 2019 Wizards of the Coast"
+    artist: "Anna Podedworna",
+    copyright: "© 2025 Wizards of the Coast"
 };
 
 window.initCardData = function() {
     return {
         ...initialCardData,
         generateSymbols(str) {
-            return str.split('').map(sym =>
-                isNaN(parseInt(sym))
-                    ? `<img src="assets/mana-fonts/small/color/mana_${sym.toLowerCase()}.png"/>`
-                    : `<img src="assets/mana-fonts/small/number/${sym.toLowerCase()}.png"/>`
-            ).join('')
+            return str.toLowerCase().split('').map(sym => {
+                if (otherSymbols.includes(sym))
+                    return `<img class="other" src="/assets/mana-fonts/small/other/mana_${sym}.png"/>`
+                return isNaN(parseInt(sym))
+                    ? `<img src="/assets/mana-fonts/small/color/mana_${sym}.png"/>`
+                    : `<img src="/assets/mana-fonts/small/number/${sym}.png"/>`
+            }).join('')
         },
         async updateBackgrounds() {
             const { color, c } = getColorIdentity(this.manaCost, this.superType);
-            const adventure = getColorIdentity(this.adventureCost, this.superType);
             this.backgrounds = [
-                background(`cards/normal/${color}card.jpg`, -10),
-                background(`adventure/base/left/bright/${adventure.c}page.png`, -5),
-                background(`adventure/base/left/bright/shadow.png`, -4),
-                background(`adventure/base/right/bright/${c}page.png`, -5),
-                background(`adventure/base/right/bright/shadow.png`, -4)
+                background(`cards/normal/${color}card.jpg`, -10)
             ];
+            this.ptStyle = {
+                backgroundImage: `url("/assets/m15/pts/${color}pt.png")`
+            };
             if (isLegendary(this.superType)) {
                 this.backgrounds.push(background(`legend/${c}crown.png`, -8));
                 this.backgrounds[0] = await maskedBackground(
@@ -94,15 +100,16 @@ window.initCardData = function() {
                     -10
                 );
             }
-            this.ptStyle = {
-                backgroundImage: `url("assets/m15/pts/${color}pt.png")`
-            };
-            this.bindingStyle = {
-                backgroundImage: `url("assets/m15/adventure/binding/${c}block.jpg")`
-            };
         },
         updateStamp() {
             this.showStamp = this.rarity.toLowerCase().includes('rare');
+        },
+        formatText(text) {
+            return text.replaceAll(symbolExpr, (match, p1, p2) => {
+                return this.generateSymbols(p1) + p2;
+            }).replaceAll(/@/g, () => {
+                return getLegendName(this);
+            });
         },
         handleArtUpload(event) {
             const file = event.target.files[0];
@@ -126,7 +133,7 @@ Alpine.directive('fit-text', (el, { expression }, { effect, evaluateLater }) => 
         el.style.fontSize = '';
         let fontSize = parseFloat(getComputedStyle(el).fontSize) || 16;
         const minFontSize = 10;
-        const step = 1;
+        const step = 0.5;
 
         while (elementOverflows(el) && fontSize > minFontSize) {
             fontSize -= step;

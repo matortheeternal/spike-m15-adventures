@@ -1,291 +1,43 @@
-@font-face {
-    font-family: "Beleren";
-    src: url("assets/fonts/beleren.ttf");
-}
-@font-face {
-    font-family: "mtg-text";
-    src: url("assets/fonts/mplantin.ttf");
-}
-
-* {
-    box-sizing: border-box;
-}
-
 body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+input:focus {
+    outline: none;
+}
+
+.content-container {
+    flex-grow: 1;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.content {
+    max-width: 600px;
     background: #111;
-    padding: 1em;
-}
-
-.card {
-    width: 375px;
-    height: 523px;
-    border-radius: 18px;
-    overflow: hidden;
-    font-family: "Beleren", serif;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    padding: 15px;
-    box-sizing: border-box;
-}
-
-.card-bg {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
-    background-position: center;
-}
-
-.card-frame {
-    flex-grow: 1;
-    border-radius: 4px;
-    display: flex;
-    flex-direction: column;
-    padding: 11px 6px;
-    padding-bottom: 0;
-}
-
-.card-header {
-    display: flex;
-    justify-content: space-between;
-    padding: 2px 8px;
-    font-size: 20px;
-    height: 31px;
-    box-sizing: border-box;
-}
-
-.mana-cost {
-    display: flex;
-    gap: 2px;
-    padding: 3px 0;
-}
-
-.mana-cost img {
-    height: 18px;
-    box-shadow: -0.03em 0.1em 0 black;
-    border-radius: 50%;
-}
-
-.card-art {
-    height: 231px;
-    overflow: hidden;
-    border: 1px solid #000;
-    box-sizing: border-box;
-    margin: 2px 9px 2px 8px;
-}
-.card-art img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-}
-
-.type-line {
-    display: flex;
-    justify-content: space-between;
-    padding: 4px 8px;
-    font-size: 17px;
-    height: 28px;
-    align-items: center;
-    margin-top: 3px;
-    margin-right: 3px;
-}
-
-.binding-container {
-    position: relative;
-    margin: 0 6px;
-}
-
-.binding {
-    position: absolute;
-    z-index: -6;
-    top: 1px;
-    height: 10px;
-    width: 100%;
-}
-
-.adventure-left, .adventure-right {
-    margin: 4px 4px 0 4px;
-    flex-basis: 50%;
-}
-
-.adventure-left {
-    display: flex;
-    flex-direction: column;
-    font-size: 16px;
-}
-
-.adventure-right {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding-left: 10px;
-    gap: 4px;
-    height: 150px;
-    overflow: hidden;
-}
-
-.adventure-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: end;
-    font-family: Beleren, serif;
     color: #fff;
-    font-size: 15px;
-    height: 21px;
-    padding: 1px 0;
+    border: 1px solid darkblue;
+    padding: 2rem;
+    margin-top: 2rem;
+    margin-bottom: 4rem;
 }
 
-.adventure-cost img {
-    height: 15px;
+.content p {
+    line-height: 1.6;
 }
 
-.adventure-type {
-    font-family: Beleren, serif;
-    color: #fff;
-    font-size: 15px;
-    height: 23px;
-    padding: 3px 0;
-    margin-bottom: 2px;
+a {
+    color: #00aadd;
+    text-decoration: none;
 }
 
-.adventure-text {
-    display: flex;
-    height: 104px;
-    overflow: hidden;
-    flex-direction: column;
-    justify-content: center;
-    flex-grow: 1;
-    line-height: 1.05;
-}
-
-.adventure-text i {
-    font-family: "Times New Roman", serif;
-}
-
-.main-text-box {
-    display: flex;
-    flex-direction: row;
-    flex-grow: 1;
-    font-size: 17px;
-    padding: 3px 7px;
-    overflow: hidden;
-    height: 160px;
-    font-family: "mtg-text", sans-serif;
-}
-
-.flavor-text {
-    font-family: "Times new Roman", serif;
-    font-style: italic;
-}
-
-.pt-overlay {
-    position: absolute;
-    bottom: 17px;
-    height: 42px;
-    right: 14px;
-    width: 80px;
-    z-index: 3;
-    font-size: 22px;
-    text-align: center;
-    background-repeat: no-repeat;
-    background-size: contain;
-}
-
-.pt-text {
-    padding: 5px;
-}
-
-.stamp-container {
-    position: absolute;
-    bottom: 30px;
-    left: 0;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-}
-
-.stamp {
-    width: 35px;
-    height: 18px;
-    background-image: url("assets/m15/stamps/oval.png");
-    background-repeat: no-repeat;
-    background-size: contain;
-}
-
-.card-footer {
-    padding: 4px 8px;
-    font-size: 10px;
-    color: #fff;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: end;
-    font-family: Tahoma, sans-serif;
-}
-
-.copyright {
-    font-size: 8px;
-}
-
-.card-info {
-    display: flex;
-    flex-direction: column;
-}
-
-.container {
-    display: flex;
-    flex-direction: row;
-    gap: 3em;
-}
-
-.field-editor {
-    background: #000;
-    color: #fff;
-    padding: 1em;
-    border-radius: 10px;
-    min-width: 30em;
-}
-
-label {
-    display: flex;
-    justify-content: flex-end;
-    gap: 1em;
-    padding: 0.2em;
-}
-
-input[type="file"], select {
-    min-width: 60%;
-}
-
-input[type="text"] {
-    min-width: 60%;
-    background: black;
-    color: white;
-}
-
-input[type="text"]:focus {
-    outline: none;
-    border-color: green;
-    box-shadow: 0 0 2px 0 green;
-}
-
-textarea {
-    min-width: 60%;
-    min-height: 6em;
-    background: black;
-    color: white;
-    font-family: "mtg-text", sans-serif;
-}
-
-textarea:focus {
-    outline: none;
-    border-color: green;
-    box-shadow: 0 0 2px 0 green;
+a:hover {
+    color: #80e6ff;
 }

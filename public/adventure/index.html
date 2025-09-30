@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>MTG Adventure Card</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="/nav.css" />
+    <script src="https://unpkg.com/alpinejs"></script>
+    <script src="/utils.js"></script>
+    <script src="index.js"></script>
+</head>
+<body x-data="initCardData()">
+<header>
+    <nav>
+        <ul>
+            <li><a href="/">About</a></li>
+            <li><a href="/mainframe">M15 Mainframe</a></li>
+            <li><a href="/adventure">M15 Adventure</a></li>
+        </ul>
+    </nav>
+</header>
+<main>
+
+    <div class="container">
+        <div class="card">
+            <template x-for="bg in backgrounds">
+                <div class="card-bg" :style="bg"></div>
+            </template>
+            <div class="card-frame">
+                <!-- Card Header -->
+                <div class="card-header">
+                    <div class="card-name" x-text="cardName"></div>
+                    <div class="mana-cost" x-html="generateSymbols(manaCost)"></div>
+                </div>
+
+                <!-- Card Art -->
+                <div class="card-art">
+                    <img :src="artUrl" alt="Card Art" />
+                </div>
+
+                <!-- Type Line -->
+                <div class="type-line" x-fit-text="[superType, subType]">
+                <span class="type-text">
+                    <span x-text="superType"></span>
+                    <span x-show="subType">
+                        <span>—</span>
+                        <span x-text="subType"></span>
+                    </span>
+                </span>
+                    <span class="rarity-icon" x-text="rarity.slice(0, 1)"></span>
+                </div>
+
+                <!-- Binding -->
+                <div class="binding-container">
+                    <div class="binding" :style="bindingStyle"></div>
+                </div>
+
+                <!-- Card Text (main rules box) -->
+                <div class="main-text-box">
+                    <div class="adventure-left">
+                        <div class="adventure-header">
+                            <span class="adventure-name" x-text="adventureName"></span>
+                            <span class="adventure-cost mana-cost" x-html="generateSymbols(adventureCost)"></span>
+                        </div>
+                        <div class="adventure-type">
+                            <span x-text="adventureSuperType"></span>
+                            <span x-show="adventureSubType">
+                            <span>—</span>
+                            <span x-text="adventureSubType"></span>
+                        </span>
+                        </div>
+                        <div class="adventure-text" x-fit-text="adventureText">
+                            <div x-html="adventureText"></div>
+                        </div>
+                    </div>
+                    <div class="adventure-right" x-fit-text="[rulesText, flavorText]">
+                        <div class="rules-text" x-html="rulesText"></div>
+                        <div class="flavor-text" x-text="flavorText"></div>
+                    </div>
+                </div>
+
+                <!-- Power/Toughness -->
+                <div class="pt-overlay" x-show="showPT" :style="ptStyle">
+                    <div class="pt-text">
+                        <span x-text="power"></span>/<span x-text="toughness"></span>
+                    </div>
+                </div>
+
+                <!-- Rare Stamp -->
+                <div class="stamp-container" x-show="showStamp">
+                    <div class="stamp"></div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="card-footer">
+                <div class="card-info">
+                    <div class="line-1">
+                        <span x-text="cardNumber"></span>
+                        <span x-text="rarity.slice(0, 1)"></span>
+                    </div>
+                    <div class="line-2">
+                        <span x-text="setCode"></span>
+                        <span>&bullet;</span>
+                        <span x-text="language"></span>
+                        <span x-text="artist"></span>
+                    </div>
+                </div>
+                <div class="copyright" x-text="copyright"></div>
+            </div>
+        </div>
+
+        <div class="field-editor">
+            <form onsubmit="return false">
+                <label>
+                    <span>Name</span>
+                    <input x-model="cardName" type="text" />
+                </label>
+                <label>
+                    <span>Mana Cost</span>
+                    <input x-model="manaCost" type="text" @input.debounce="updateBackgrounds()" />
+                </label>
+                <label>
+                    <span>Image</span>
+                    <input type="file" accept="image/*" @change="handleArtUpload($event)" />
+                </label>
+                <label>
+                    <span>Super Type</span>
+                    <input x-model="superType" type="text" @input.debounce="updateBackgrounds()" />
+                </label>
+                <label>
+                    <span>Sub Type</span>
+                    <input x-model="subType" type="text" />
+                </label>
+                <label>
+                    <span>Rarity</span>
+                    <select x-model="rarity" @input.debounce="updateStamp()">
+                        <option>Common</option>
+                        <option>Uncommon</option>
+                        <option>Rare</option>
+                        <option>Mythic Rare</option>
+                    </select>
+                </label>
+                <label>
+                    <span>Adventure Name</span>
+                    <input x-model="adventureName" type="text" />
+                </label>
+                <label>
+                    <span>Adventure Mana Cost</span>
+                    <input x-model="adventureCost" type="text" @input.debounce="updateBackgrounds()" />
+                </label>
+                <label>
+                    <span>Adventure Super Type</span>
+                    <input x-model="adventureSuperType" type="text" />
+                </label>
+                <label>
+                    <span>Adventure Sub Type</span>
+                    <input x-model="adventureSubType" type="text" />
+                </label>
+                <label>
+                    <span>Adventure Text</span>
+                    <textarea x-model="adventureText"></textarea>
+                </label>
+                <label>
+                    <span>Rules Text</span>
+                    <textarea x-model="rulesText"></textarea>
+                </label>
+                <label>
+                    <span>Flavor Text</span>
+                    <textarea x-model="flavorText"></textarea>
+                </label>
+                <label>
+                    <span>Power</span>
+                    <input x-model="power" type="text" />
+                </label>
+                <label>
+                    <span>Toughness</span>
+                    <input x-model="toughness" type="text" />
+                </label>
+                <label>
+                    <span>Card Number</span>
+                    <input x-model="cardNumber" type="text" />
+                </label>
+                <label>
+                    <span>Set Code</span>
+                    <input x-model="setCode" type="text" />
+                </label>
+                <label>
+                    <span>Language</span>
+                    <input x-model="language" type="text" />
+                </label>
+                <label>
+                    <span>Artist</span>
+                    <input x-model="artist" type="text" />
+                </label>
+                <label>
+                    <span>Copyright</span>
+                    <input x-model="copyright" type="text" />
+                </label>
+            </form>
+        </div>
+    </div>
+</main>
+</body>
+</html>
