@@ -1,10 +1,17 @@
 @font-face {
     font-family: "Beleren";
     src: url("/assets/fonts/beleren.ttf");
+}@font-face {
+    font-family: "Beleren Bold";
+    src: url("/assets/fonts/beleren-bold_P1.01.ttf");
 }
 @font-face {
-    font-family: "mtg-text";
-    src: url("/assets/fonts/mplantin.ttf");
+    font-family: "Beleren Small Caps Bold";
+    src: url("/assets/fonts/belerensmallcaps-bold.ttf");
+}
+@font-face {
+    font-family: "Relay Medium";
+    src: url("/assets/fonts/relay-medium.ttf");
 }
 
 * {
@@ -24,7 +31,7 @@ body {
     height: 523px;
     border-radius: 18px;
     overflow: hidden;
-    font-family: "Beleren", serif;
+    font-family: "Beleren Bold", serif;
     display: flex;
     flex-direction: column;
     position: relative;
@@ -89,7 +96,6 @@ body {
     justify-content: space-between;
     padding: 4px 8px;
     font-size: 17px;
-    letter-spacing: 0.1px;
     height: 28px;
     align-items: center;
     margin-top: 3px;
@@ -229,18 +235,27 @@ body {
 }
 
 .card-footer {
-    padding: 4px 8px;
+    padding: 0 10px;
     font-size: 10px;
     color: #fff;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: end;
-    font-family: Tahoma, sans-serif;
+    font-family: "Relay Medium", sans-serif;
+    font-weight: bold;
 }
 
 .copyright {
-    font-size: 8px;
+    font-size: 9.5px;
+    font-weight: initial;
+    font-family: "MPlantin", sans-serif;
+}
+
+.card-info .artist {
+    font-size: 10.5px;
+    font-weight: initial;
+    font-family: "Beleren Small Caps Bold", sans-serif;
 }
 
 .card-info {
