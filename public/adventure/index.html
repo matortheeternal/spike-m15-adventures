@@ -20,7 +20,6 @@
     </nav>
 </header>
 <main>
-
     <div class="container">
         <div class="card">
             <template x-for="bg in backgrounds">
@@ -29,7 +28,7 @@
             <div class="card-frame">
                 <!-- Card Header -->
                 <div class="card-header">
-                    <div class="card-name" x-text="cardName"></div>
+                    <div class="card-name" x-text="cardName" x-fit-text="cardName"></div>
                     <div class="mana-cost" x-html="generateSymbols(manaCost)"></div>
                 </div>
 
@@ -70,11 +69,11 @@
                         </span>
                         </div>
                         <div class="adventure-text" x-fit-text="adventureText">
-                            <div x-html="adventureText"></div>
+                            <div x-html="formatText(adventureText)"></div>
                         </div>
                     </div>
                     <div class="adventure-right" x-fit-text="[rulesText, flavorText]">
-                        <div class="rules-text" x-html="rulesText"></div>
+                        <div class="rules-text" x-html="formatText(rulesText)"></div>
                         <div class="flavor-text" x-text="flavorText"></div>
                     </div>
                 </div>

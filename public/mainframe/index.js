@@ -6,9 +6,6 @@ const colorNames = {
     u: 'blue'
 };
 
-const otherSymbols = ['q', 't', 'x', 'y', 'z'];
-const symbolExpr = /([1-9WUBRGwubrgTXYZ]+)(,)/g;
-
 function background(path, zIndex) {
     return { backgroundImage: `url("/assets/m15/${path}")`, zIndex };
 }
@@ -34,17 +31,6 @@ function getColorIdentity(manaCost, superType) {
         return { c, color: colorNames[c] };
     }
     return { c: 'm', color: 'gold' };
-}
-
-function isLegendary(superType) {
-    return superType.toLowerCase().includes('legendary');
-}
-
-function getLegendName(card) {
-    if (!isLegendary(card.superType))
-        return card.cardName;
-    const match = card.cardName.match(/^(.+),|(.+) the/);
-    return match ? match[1] || match[2] : card.cardName;
 }
 
 const initialCardData = {
@@ -76,13 +62,7 @@ window.initCardData = function() {
     return {
         ...initialCardData,
         generateSymbols(str) {
-            return str.toLowerCase().split('').map(sym => {
-                if (otherSymbols.includes(sym))
-                    return `<img class="other" src="/assets/mana-fonts/small/other/mana_${sym}.png"/>`
-                return isNaN(parseInt(sym))
-                    ? `<img src="/assets/mana-fonts/small/color/mana_${sym}.png"/>`
-                    : `<img src="/assets/mana-fonts/small/number/${sym}.png"/>`
-            }).join('')
+            return window.generateSymbols(str);
         },
         async updateBackgrounds() {
             const { color, c } = getColorIdentity(this.manaCost, this.superType);
@@ -105,11 +85,7 @@ window.initCardData = function() {
             this.showStamp = this.rarity.toLowerCase().includes('rare');
         },
         formatText(text) {
-            return text.replaceAll(symbolExpr, (match, p1, p2) => {
-                return this.generateSymbols(p1) + p2;
-            }).replaceAll(/@/g, () => {
-                return getLegendName(this);
-            });
+            return window.formatText(text, this);
         },
         handleArtUpload(event) {
             const file = event.target.files[0];
@@ -126,27 +102,3 @@ window.initCardData = function() {
         }
     }
 }
-
-function elementOverflows(el) {
-    return el.scrollHeight > el.clientHeight || el.scrollWidth > el.clientWidth;
-}
-
-Alpine.directive('fit-text', (el, { expression }, { effect, evaluateLater }) => {
-    const adjustFontSize = () => {
-        el.style.fontSize = '';
-        let fontSize = parseFloat(getComputedStyle(el).fontSize) || 16;
-        const minFontSize = 10;
-        const step = 0.5;
-
-        while (elementOverflows(el) && fontSize > minFontSize) {
-            fontSize -= step;
-            el.style.fontSize = `${fontSize}px`;
-        }
-    };
-
-    effect(() => {
-        evaluateLater(expression || 'true')(() => {
-            Alpine.nextTick(adjustFontSize);
-        });
-    });
-});

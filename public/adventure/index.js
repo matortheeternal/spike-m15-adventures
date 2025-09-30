@@ -33,10 +33,6 @@ function getColorIdentity(manaCost, superType) {
     return { c: 'm', color: 'gold' };
 }
 
-function isLegendary(superType) {
-    return superType.toLowerCase().includes('legendary');
-}
-
 const initialCardData = {
     cardName: "Garenbrig Carver",
     manaCost: "3G",
@@ -70,11 +66,7 @@ window.initCardData = function() {
     return {
         ...initialCardData,
         generateSymbols(str) {
-            return str.split('').map(sym =>
-                isNaN(parseInt(sym))
-                    ? `<img src="/assets/mana-fonts/small/color/mana_${sym.toLowerCase()}.png"/>`
-                    : `<img src="/assets/mana-fonts/small/number/${sym.toLowerCase()}.png"/>`
-            ).join('')
+            return window.generateSymbols(str);
         },
         async updateBackgrounds() {
             const { color, c } = getColorIdentity(this.manaCost, this.superType);
@@ -101,6 +93,9 @@ window.initCardData = function() {
                 backgroundImage: `url("/assets/m15/adventure/binding/${c}block.jpg")`
             };
         },
+        formatText(text) {
+            return window.formatText(text, this);
+        },
         updateStamp() {
             this.showStamp = this.rarity.toLowerCase().includes('rare');
         },
@@ -119,27 +114,3 @@ window.initCardData = function() {
         }
     }
 }
-
-function elementOverflows(el) {
-    return el.scrollHeight > el.clientHeight || el.scrollWidth > el.clientWidth;
-}
-
-Alpine.directive('fit-text', (el, { expression }, { effect, evaluateLater }) => {
-    const adjustFontSize = () => {
-        el.style.fontSize = '';
-        let fontSize = parseFloat(getComputedStyle(el).fontSize) || 16;
-        const minFontSize = 10;
-        const step = 1;
-
-        while (elementOverflows(el) && fontSize > minFontSize) {
-            fontSize -= step;
-            el.style.fontSize = `${fontSize}px`;
-        }
-    };
-
-    effect(() => {
-        evaluateLater(expression || 'true')(() => {
-            Alpine.nextTick(adjustFontSize);
-        });
-    });
-});
