@@ -59,7 +59,7 @@ const initialCardData = {
     rulesText: "<p>1G, T, Return @ to its owner's hand: Reveal the top four cards of your " +
         "library. You may put a land card from among them onto the battlefield tapped. " +
         "Put the rest into your graveyard.</p>" +
-        "<p>Channel — XXGG, Discard this card: Return X target nonlegendary cards from " +
+        "<p><i>Channel</i> — XXGG, Discard this card: Return X target nonlegendary cards from " +
         "your graveyard to your hand.</p>",
     power: "1",
     toughness: "3",
@@ -117,6 +117,9 @@ window.initCardData = function() {
             if (this.artUrl && this.artUrl.startsWith('blob:'))
                 URL.revokeObjectURL(this.artUrl);
             this.artUrl = URL.createObjectURL(file);
+        },
+        ptUpdated() {
+            this.showPT = this.toughness.length || this.power.length;
         },
         init() {
             this.updateBackgrounds();

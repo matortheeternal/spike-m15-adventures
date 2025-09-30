@@ -111,6 +111,9 @@ window.initCardData = function() {
                 URL.revokeObjectURL(this.artUrl);
             this.artUrl = URL.createObjectURL(file);
         },
+        ptUpdated() {
+            this.showPT = this.toughness.length || this.power.length;
+        },
         init() {
             this.updateBackgrounds();
         }

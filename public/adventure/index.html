@@ -171,11 +171,11 @@
                 </label>
                 <label>
                     <span>Power</span>
-                    <input x-model="power" type="text" />
+                    <input x-model="power" type="text" @input.debounce="ptUpdated()" />
                 </label>
                 <label>
                     <span>Toughness</span>
-                    <input x-model="toughness" type="text" />
+                    <input x-model="toughness" type="text" @input.debounce="ptUpdated()" />
                 </label>
                 <label>
                     <span>Card Number</span>
